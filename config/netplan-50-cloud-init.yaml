@@ -1,0 +1,13 @@
+# Configuración de red del servidor original (18.100.82.140)
+# Ubicación: /etc/netplan/50-cloud-init.yaml
+# Nota: La MAC address debe ajustarse al nuevo servidor
+
+network:
+  version: 2
+  ethernets:
+    ens5:
+      match:
+        macaddress: "0e:66:9e:28:f1:df"
+      dhcp4: true
+      dhcp6: false
+      set-name: "ens5"
