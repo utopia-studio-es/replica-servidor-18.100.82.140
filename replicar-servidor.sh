@@ -18,10 +18,13 @@ apt-get install -y \
     python3 python3-apt rsync snapd sudo systemd ufw unattended-upgrades \
     vim wget
 
-# Configurar SSH (PasswordAuthentication)
-sed -i 's/^#*PasswordAuthentication.*/PasswordAuthentication yes/' /etc/ssh/sshd_config
-sed -i 's/^#*KbdInteractiveAuthentication.*/KbdInteractiveAuthentication no/' /etc/ssh/sshd_config
-systemctl restart sshd 2>/dev/null || systemctl restart ssh
+# SSH: fragmento 50-* antes de 60-cloudimg (primer valor gana en OpenSSH)
+cat > /etc/ssh/sshd_config.d/50-replica-18.100.82.140.conf << 'SSHEOF'
+PasswordAuthentication yes
+KbdInteractiveAuthentication no
+SSHEOF
+chmod 0644 /etc/ssh/sshd_config.d/50-replica-18.100.82.140.conf
+sshd -t && (systemctl restart sshd 2>/dev/null || systemctl restart ssh)
 
 # Instalar Amazon SSM Agent (si es EC2)
 if command -v snap &>/dev/null; then

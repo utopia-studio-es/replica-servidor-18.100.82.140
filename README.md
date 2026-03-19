@@ -26,7 +26,13 @@ Documentación y scripts para replicar el servidor remoto `ip-172-31-0-132` (18.
 ## Uso Rápido
 
 ```bash
-# En un nuevo servidor Ubuntu 24.04:
+# En un nuevo servidor Ubuntu 24.04 — réplica completa (paquetes + SSH + UFW + netplan por MAC):
+sudo bash desplegar-en-este-servidor.sh
+```
+
+O solo paquetes mínimos + ajustes básicos:
+
+```bash
 sudo bash replicar-servidor.sh
 ```
 
