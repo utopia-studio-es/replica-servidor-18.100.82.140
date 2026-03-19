@@ -31,6 +31,20 @@ rsync -avz -e ssh --exclude '.venv' --exclude '__pycache__' \
 
 En el **destino** (tras instalar Docker + nginx + venv y restaurar volúmenes como en el despliegue ya hecho): ver scripts históricos en commits o la conversación de despliegue.
 
+## Nginx: 403 en CSS/JS/imágenes (`/static/`)
+
+Si la consola del navegador muestra **403 Forbidden** en `style.css`, `common.js`, `favicon.svg`, etc., en `/var/log/nginx/error.log` suele aparecer **`Permission denied (13)`**.
+
+**Causa:** `/home/ubuntu` puede quedar en **750** (`drwxr-x---`). Nginx trabaja como usuario **`www-data`**, que **no puede atravesar** ese directorio hasta `rag-xcailex/static/`.
+
+**Corrección:**
+
+```bash
+sudo chmod 755 /home/ubuntu
+```
+
+(O con ACL: `sudo setfacl -m u:www-data:rx /home/ubuntu`.)
+
 ## Seguridad
 
 - El archivo `.env` en el destino contiene **tokens y JWT**. Limita SSH, cambia secretos si el destino es menos confiable.
